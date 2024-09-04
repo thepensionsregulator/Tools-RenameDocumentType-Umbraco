@@ -417,18 +417,3 @@ ood.flag
 
 # Development environment
 appsettings.Development.json
-
-# ThePensionsRegulator.Frontend files
-Source/Features/PPFLevyContact/Styles
-Source/Shared/SchemeReturns.Web.Core/Styles
-Source/Features/EmployerCovenantGrading/Styles
-Source/Shared/SchemeReturns.ModelsBuilder/Styles
-Source/Shared/SchemeReturns.ModelsBuilder/wwwroot
-
-# ThePensionsRegulator.Umbraco files
-Source/Features/PPFLevyContact/uSync
-Source/Features/PPFLevyContact/wwwroot
-Source/Features/EmployerCovenantGrading/uSync
-Source/Shared/SchemeReturns.ModelsBuilder/usync
-Source/Features/EmployerCovenantGrading/wwwroot/css
-Source/Features/SchemeLeavers/wwwroot/css/site.css
