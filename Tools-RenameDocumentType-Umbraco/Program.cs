@@ -10,6 +10,8 @@ namespace Umbraco.Doctype.Renamer
         private const string ORIGINAL_DOC_TYPE_ALIAS = "OriginalDocTypeAlias";
         private const string NEW_DOC_TYPE_NAME = "NewDocTypeName";
         private const string USYNC_DIRECTORY = "uSyncDirectory";
+        private const string IGNORE_CASE = "IgnoreCase";
+        private const string CULTURE_INFO = "CultureInfo";
 
         static void Main(string[] args)
         {
@@ -25,7 +27,14 @@ namespace Umbraco.Doctype.Renamer
             var originalDocTypeAlias = config[ORIGINAL_DOC_TYPE_ALIAS];
             var originalDocTypeFileName = originalDocTypeName.Replace(" ", string.Empty);
 
-            var englishBritishCultureInfo = new CultureInfo("en-GB");
+            if (bool.TryParse(config[IGNORE_CASE], out var ignoreCase) == false)
+            {
+                Console.WriteLine("No value for 'IgnoreCase' found in appsettings.json, defaulting to true");
+                ignoreCase = true;
+            }
+
+
+            var cultureInfo = new CultureInfo(config[CULTURE_INFO] ?? "en-GB");
 
             if (string.IsNullOrEmpty(originalDocTypeAlias))
             {
@@ -47,19 +56,17 @@ namespace Umbraco.Doctype.Renamer
                 Console.WriteLine($"{file} will be updated");
                 var fileContent = File.ReadAllText(file);
 
-                var ignoreCase = true;
-
-                fileContent = fileContent.Replace(originalDocTypeAlias, newDocTypeFileNamePrefix, ignoreCase, englishBritishCultureInfo);
+                fileContent = fileContent.Replace(originalDocTypeAlias, newDocTypeFileNamePrefix, ignoreCase, cultureInfo);
 
                 if (file.Contains(".generated."))
                 {
-                    fileContent = fileContent.Replace(originalDocTypeAlias, newDocTypeAlias, ignoreCase, englishBritishCultureInfo);
+                    fileContent = fileContent.Replace(originalDocTypeAlias, newDocTypeAlias, ignoreCase, cultureInfo);
                 }
 
 
                 File.WriteAllText(file, fileContent);
 
-                var newFileName = file.Replace(originalDocTypeFileName, newDocTypeFileNamePrefix, ignoreCase, englishBritishCultureInfo);
+                var newFileName = file.Replace(originalDocTypeFileName, newDocTypeFileNamePrefix, ignoreCase, cultureInfo);
                 Console.WriteLine($"Renaming {file} to {newFileName}");
                 File.Move(file, newFileName);
             }
