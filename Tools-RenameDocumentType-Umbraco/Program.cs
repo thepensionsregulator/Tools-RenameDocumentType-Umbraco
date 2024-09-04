@@ -27,6 +27,11 @@ namespace Umbraco.Doctype.Renamer
             var originalDocTypeAlias = config[ORIGINAL_DOC_TYPE_ALIAS];
             var originalDocTypeFileName = originalDocTypeName.Replace(" ", string.Empty);
 
+            if (string.IsNullOrEmpty(originalDocTypeAlias))
+            {
+                originalDocTypeAlias = GenerateAlias(originalDocTypeName);
+            }
+            
             if (bool.TryParse(config[IGNORE_CASE], out var ignoreCase) == false)
             {
                 Console.WriteLine("No value for 'IgnoreCase' found in appsettings.json, defaulting to true");
@@ -36,10 +41,6 @@ namespace Umbraco.Doctype.Renamer
 
             var cultureInfo = new CultureInfo(config[CULTURE_INFO] ?? "en-GB");
 
-            if (string.IsNullOrEmpty(originalDocTypeAlias))
-            {
-                originalDocTypeAlias = GenerateAlias(originalDocTypeName);
-            }
 
             var newDocTypeName = GetConfigValueOrUserInput(config, NEW_DOC_TYPE_NAME);
             var newDocTypeAlias = GenerateAlias(newDocTypeName);
