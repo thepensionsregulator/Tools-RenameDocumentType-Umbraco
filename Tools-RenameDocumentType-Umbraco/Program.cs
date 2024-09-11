@@ -24,13 +24,8 @@ namespace Umbraco.Doctype.Renamer
             var baseDirectory = GetConfigValueOrUserInput(config, BASE_DIRECTORY);
 
             var originalDocTypeName = GetConfigValueOrUserInput(config, ORIGINAL_DOC_TYPE_NAME);
-            var originalDocTypeAlias = config[ORIGINAL_DOC_TYPE_ALIAS];
+            var originalDocTypeAlias = GetConfigValueOrUserInput(config, ORIGINAL_DOC_TYPE_ALIAS);
             var originalDocTypeFileName = originalDocTypeName.Replace(" ", string.Empty);
-
-            if (string.IsNullOrEmpty(originalDocTypeAlias))
-            {
-                originalDocTypeAlias = GenerateAlias(originalDocTypeName);
-            }
             
             if (bool.TryParse(config[IGNORE_CASE], out var ignoreCase) == false)
             {
@@ -38,9 +33,7 @@ namespace Umbraco.Doctype.Renamer
                 ignoreCase = true;
             }
 
-
             var cultureInfo = new CultureInfo(config[CULTURE_INFO] ?? "en-GB");
-
 
             var newDocTypeName = GetConfigValueOrUserInput(config, NEW_DOC_TYPE_NAME);
             var newDocTypeAlias = GenerateAlias(newDocTypeName);
@@ -109,7 +102,6 @@ namespace Umbraco.Doctype.Renamer
         {
             return docTypeName.Replace(" ", string.Empty);
         }
-
 
         private static string GetConfigValueOrUserInput(IConfigurationRoot config, string key)
         {
